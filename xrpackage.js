@@ -388,6 +388,7 @@ export class XRPackageEngine extends EventTarget {
       alpha: true,
       xrCompatible: true,
     });
+    // proxyContext.makeXRCompatible && proxyContext.makeXRCompatible();
     canvas.proxyContext = proxyContext;
     this.proxyContext = proxyContext;
     
