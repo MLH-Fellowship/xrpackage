@@ -1,4 +1,7 @@
-const LOCAL_DEV = false;
+const queryParamDebug = new URL(location).searchParams.get('debug');
+const LOCAL_DEV = typeof queryParamDebug === 'undefined'
+    ? false
+    : queryParamDebug === '1';
 
 /*!
     localForage -- Offline Storage, Improved

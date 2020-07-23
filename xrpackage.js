@@ -116,8 +116,8 @@ const _getSlotInput = (rig, slot) => {
 
 const _removeUrlTail = u => u.replace(/(?:\?|\#).*$/, '');
 
-const _initSw = async () => {
-  await navigator.serviceWorker.register('/sw.js', {
+const _initSw = async (debug = 0) => {
+  await navigator.serviceWorker.register(`/sw.js?debug=${debug}`, {
     // type: 'module',
   });
   if (!navigator.serviceWorker.controller) {
@@ -139,6 +139,7 @@ const _initSw = async () => {
   console.log('sw registration', window.registration);
 };
 const swLoadPromise = _initSw().then(() => {});
+const swLoadPromiseDebug = _initSw(1).then(() => {});
 
 const _makeXrState = () => {
   const _makeSab = size => {
@@ -817,14 +818,14 @@ export class XRPackageEngine extends XRNode {
         gl.activeTexture(oldActiveTexture);
       };
     }
-    
+
     renderer.render(scene, camera); // pre-render the scene to compile
 
     options.autoStart && this.start();
     options.autoListen && this.listen();
   }
-  static waitForLoad() {
-    return swLoadPromise;
+  static waitForLoad(debug) {
+    return debug ? swLoadPromiseDebug : swLoadPromise;
   }
   getContext(type, opts) {
     return getContext.call(this.domElement, type, opts);
